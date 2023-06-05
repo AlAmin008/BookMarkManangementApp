@@ -1,6 +1,10 @@
 import 'package:bookmarkapp/modals/categoryType.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter/services.dart' show rootBundle;
+
+import 'package:csv/csv.dart';
+
 import '../modals/data.dart';
 import '../widgets/Bookmark_List.dart';
 import '../widgets/ShowBoorkMarkdetail.dart';
@@ -19,7 +23,9 @@ class _HomePageState extends State<HomePage> {
   final userdefineCategory = TextEditingController();
   String dropdownValue = 'category';
   bool newCategoryFieldVisibility = false;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  List<List<dynamic>> rows = [];
 
   void visibility() {
     setState(() {
@@ -28,9 +34,32 @@ class _HomePageState extends State<HomePage> {
   }
 
   void addCategory(String title, String url, categoryTypes categorytypes) {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCSV();
+    _loadCSV2();
+  }
+
+  List<List<dynamic>> _data = [];
+  void _loadCSV() async {
+    final rawData = await rootBundle.loadString("userData.csv");
+    List<List<dynamic>> listData = const CsvToListConverter().convert(rawData);
     setState(() {
-      dataA.add(
-          BookMarkData(title: title, url: url, categoryType: categorytypes));
+      _data = listData;
+    });
+  }
+
+  List<List<dynamic>> _data2 = [];
+  void _loadCSV2() async {
+    final rawData = await rootBundle.loadString("userdataB.csv");
+    List<List<dynamic>> listData = const CsvToListConverter().convert(rawData);
+    // print(listData[0]);
+    setState(() {
+      _data2 = listData;
     });
   }
 
@@ -136,10 +165,18 @@ class _HomePageState extends State<HomePage> {
                             }),
                         ElevatedButton(
                             child: const Text("Save"),
-                            onPressed: () {
-                              print(usertitle.text);
-                              print(userUrl.text);
-                              print(userCategory.text);
+                            onPressed: () async {
+                              List<dynamic> dataRow = [];
+                              dataRow.add(usertitle.text);
+                              dataRow.add(userUrl.text);
+                              dataRow.add(dropdownValue);
+
+                              rows.add(dataRow);
+
+                              String csv =
+                                  const ListToCsvConverter().convert(rows);
+
+                              print(csv.toString());
                             }),
                       ],
                     ),
@@ -152,22 +189,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void showDetail(BookMarkData dataA, bool showdetails) {
-    setState(() {
-      ShowBookMarkDetail(dataA: dataA, showdetails: showdetails);
-    });
+    // setState(() {
+    //   ShowBookMarkDetail(dataA: dataA, showdetails: showdetails);
+    // });
   }
-
-  bool showdetails = false;
-  List<BookMarkData> dataA = [
-    BookMarkData(
-        title: 'Java', url: 'www', categoryType: categoryTypes.Category_A),
-    BookMarkData(
-        title: 'Angular basics',
-        url: 'www',
-        categoryType: categoryTypes.Category_A),
-    BookMarkData(
-        title: 'React', url: 'www', categoryType: categoryTypes.Category_A),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -215,16 +240,16 @@ class _HomePageState extends State<HomePage> {
                     style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
-                ShowBookMarkList(dataA: dataA, show: showDetail),
+                ShowBookMarkList(data: _data, show: showDetail),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 20, top: 10),
+                  padding: const EdgeInsets.only(bottom: 20, top: 10),
                   child: Text('Category B',
                       style: Theme.of(context).textTheme.displayLarge),
                 ),
-                ShowBookMarkList(dataA: dataA, show: showDetail),
+                ShowBookMarkList(data: _data2, show: showDetail),
               ],
             ),
-            ShowBookMarkDetail(dataA: dataA[0], showdetails: true),
+            ShowBookMarkDetail(dataA: _data[0], showdetails: true),
           ],
         ),
       ),

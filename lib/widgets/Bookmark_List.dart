@@ -4,9 +4,10 @@ import '../modals/data.dart';
 import '../screens/homepage.dart';
 
 class ShowBookMarkList extends StatelessWidget {
-  List<BookMarkData> dataA;
+  // List<BookMarkData> dataA;
+  List<List<dynamic>> data;
   final Function show;
-  ShowBookMarkList({required this.dataA, required this.show});
+  ShowBookMarkList({required this.data, required this.show});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class ShowBookMarkList extends StatelessWidget {
         height: 200,
         width: (MediaQuery.of(context).size.width / 2) - 20,
         child: ListView.builder(
-            itemCount: dataA.length,
+            itemCount: data.length,
             itemBuilder: ((context, index) {
               return Card(
                 elevation: 0.0,
@@ -27,12 +28,12 @@ class ShowBookMarkList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        dataA[index].title,
+                        data[index][0].toString(),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       ElevatedButton(
                           onPressed: () {
-                            show(dataA[index], true);
+                            show(data[index], true);
                           },
                           child: Text('Details'))
                     ],
