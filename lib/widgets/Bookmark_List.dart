@@ -26,7 +26,10 @@ class ShowBookMarkList extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(dataA[index].title),
+                      Text(
+                        dataA[index].title,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                       ElevatedButton(
                           onPressed: () {
                             show(dataA[index], true);

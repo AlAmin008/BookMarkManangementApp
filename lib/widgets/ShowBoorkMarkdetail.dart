@@ -19,22 +19,27 @@ class _ShowBookMarkDetailState extends State<ShowBookMarkDetail> {
       child: Card(
         elevation: 10,
         child: Container(
-          padding: EdgeInsets.all(20),
-          height: 100,
+          padding: const EdgeInsets.all(20),
+          height: 150,
           width: (MediaQuery.of(context).size.width / 2) - 100,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Title : ${widget.dataA.title}'),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              FittedBox(child: Text('URL :  : ${widget.dataA.url}')),
-              SizedBox(
+              FittedBox(
+                  child: Text(
+                'URL :  ${widget.dataA.url}',
+                style: Theme.of(context).textTheme.bodyMedium,
+              )),
+              const SizedBox(
                 height: 5,
               ),
               Text(
-                widget.dataA.categoryType.name,
+                'Category :  ${widget.dataA.categoryType.name}',
+                style: Theme.of(context).textTheme.bodyMedium,
               )
             ],
           ),

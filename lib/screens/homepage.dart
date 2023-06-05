@@ -42,7 +42,10 @@ class _HomePageState extends State<HomePage> {
             builder: (context, setState) {
               return AlertDialog(
                 scrollable: true,
-                title: const Text('Add Bookmark'),
+                title: Text(
+                  'Add Bookmark',
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
                 content: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Form(
@@ -93,7 +96,9 @@ class _HomePageState extends State<HomePage> {
                               }),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                visibility();
+                              },
                               icon: const Icon(Icons.add_box_rounded),
                             ),
                           ],
@@ -127,15 +132,14 @@ class _HomePageState extends State<HomePage> {
                               usertitle.clear();
                               userUrl.clear();
                               userCategory.clear();
+                              Navigator.of(context).pop();
                             }),
                         ElevatedButton(
                             child: const Text("Save"),
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                addCategory(usertitle.text, userUrl.text,
-                                    categoryTypes.Category_A);
-                                Navigator.of(context).pop();
-                              }
+                              print(usertitle.text);
+                              print(userUrl.text);
+                              print(userCategory.text);
                             }),
                       ],
                     ),
@@ -204,28 +208,18 @@ class _HomePageState extends State<HomePage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 20),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: Text(
                     'Category A',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
                 ShowBookMarkList(dataA: dataA, show: showDetail),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(bottom: 20, top: 10),
-                  child: Text(
-                    'Category B',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  ),
+                  child: Text('Category B',
+                      style: Theme.of(context).textTheme.displayLarge),
                 ),
                 ShowBookMarkList(dataA: dataA, show: showDetail),
               ],
